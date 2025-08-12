@@ -1,5 +1,6 @@
 import pandas as pd
 import openpyxl
+import os
 
 def compare_holdings(file1, file2, output_file):
     # 讀取檔案
@@ -14,7 +15,7 @@ def compare_holdings(file1, file2, output_file):
     df1_level15 = df1[df1['持股分級'] == 15][['證券代號','占集保庫存數比例%']]
     df2_level15 = df2[df2['持股分級'] == 15][['證券代號','占集保庫存數比例%']]
 
-    # 合併個別15級（outer保全部）
+    # 合併個別15級
     merged = pd.merge(
         df1_level15,
         df2_level15,
@@ -53,7 +54,8 @@ def compare_holdings(file1, file2, output_file):
     print(f"結果已保存到 {output_file}")
 
 if __name__ == "__main__":
-    file1 = "20250124.csv"
-    file2 = "20250808.csv"
-    output_file = "持股分級15比例變化.xlsx"
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    file1 = os.path.join(base_dir, "20250124.csv")
+    file2 = os.path.join(base_dir, "20250808.csv")
+    output_file = os.path.join(base_dir, "持股分級15比例變化.xlsx")
     compare_holdings(file1, file2, output_file)
